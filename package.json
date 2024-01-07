@@ -1,0 +1,15 @@
+{
+  "name": "youtube-backend-clone",
+  "version": "1.0.0",
+  "description": "That a total backend clone of youtube",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "learn",
+    "backend"
+  ],
+  "author": "Ujjwal rai",
+  "license": "ISC"
+}
