@@ -24,3 +24,6 @@ const uploadOnCloudinary = async (localFilePath) => {
     fs.unlinkSync(localFilePath) // remove file on local disk when file not  uploade
     }
 }
+
+
+export {uploadOnCloudinary}
