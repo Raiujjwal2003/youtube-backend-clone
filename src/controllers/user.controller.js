@@ -17,15 +17,15 @@ const registerUser = asyncHandler (async (req, res) => {
     // check for user creation
     // return res
 
-    const {fullname, email, username, password} = req.body
+    const {fullName, email, username, password} = req.body
     console.log("email: ", email);
 
-    if(fullname  == ""){
-        throw new ApiError(400, "Fullname is required")
+    if(fullName  == ""){
+        throw new ApiError(400, "fullName is required")
     }
 
     if (
-        [fullname, email , username , password].some((field)=> field?.trim() === "")
+        [fullName, email , username , password].some((field)=> field?.trim() === "")
 
     ) {
         throw new ApiError(400, "All field is required")
@@ -38,7 +38,9 @@ const registerUser = asyncHandler (async (req, res) => {
     if(existedUser){
         throw  new ApiError (409, "User with email or username already exists")
     }
-    const avatarLocalPath=  req.files?.avtar[0]?.path ;
+
+    console.log(req.files)
+    const avatarLocalPath=  req.files?.avatar[0]?.path ;
     const coverImageLocalPath=  req.files?.coverImage[0]?.path ;
 
     if(!avatarLocalPath){
@@ -53,7 +55,7 @@ const registerUser = asyncHandler (async (req, res) => {
     }
 
     const user = await User.create({
-        fullname,
+        fullName,
         email,
         password,
         avatar: avatar.url,
@@ -65,7 +67,7 @@ const registerUser = asyncHandler (async (req, res) => {
     .select("-password -refreshToken")
 
     if(!userCreate){
-        throw new ApiError(500, " Somthi")
+        throw new ApiError(500, " Somthimg went wrong")
     }
 
     return res.status(201).json(
