@@ -4,6 +4,7 @@ import { ApiError } from "../utils/ApiError.js"
 import {uploadOnCloudinary} from "../utils/cloudnary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
 // import { Aggregate } from "mongoose";
 // import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -329,7 +330,7 @@ const updateUserCoverImage = asyncHandler(async(req,res)=> {
 
     }
 
-    const User=  await User.findByIdAndUpdate(
+    const user=  await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
