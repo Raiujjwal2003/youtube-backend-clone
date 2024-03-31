@@ -65,24 +65,43 @@ const registerUser = asyncHandler (async (req, res) => {
         throw  new ApiError (409, "User with email or username already exists")
     }
 
-    // console.log(req.files)
-    const avatarLocalPath=  req.files?.avatar[0]?.path ;
-    // const coverImageLocalPath=  req.files?.coverImage[0]?.path ;
-    let coverImageLocalPath;
-    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
-        coverImageLocalPath = req.files.coverImage[0].path
-    }
+    console.log(req.files)
+    // const avatarLocalPath=  req.files?.avatar[0]?.path ;
+    // // const coverImageLocalPath=  req.files?.coverImage[0]?.path ;
+    // let coverImageLocalPath;
+    // if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+    //     coverImageLocalPath = req.files.coverImage[0].path
+    // }
 
-    if(!avatarLocalPath){
-        throw new ApiError(400,"avatar is required")
-    }
+    // if(!avatarLocalPath){
+    //     throw new ApiError(400,"avatar is required")
+    // }
 
-    const avatar = await  uploadOnCloudinary(avatarLocalPath)
-    const coverImage = await  uploadOnCloudinary(coverImageLocalPath)
+    // const avatar = await  uploadOnCloudinary(avatarLocalPath)
+    // const coverImage = await  uploadOnCloudinary(coverImageLocalPath)
 
-    if(!avatar){
-        throw new ApiError(400, "avatar file is required")
-    }
+    // if(!avatar){
+    //     throw new ApiError(400, "avatar file is required")
+    // }
+
+    const avatarLocalPath = req.files?.avatar?.[0]?.path;
+let coverImageLocalPath;
+
+if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+    coverImageLocalPath = req.files.coverImage[0].path;
+}
+
+if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar is required");
+}
+
+const avatar = await uploadOnCloudinary(avatarLocalPath);
+const coverImage = coverImageLocalPath ? await uploadOnCloudinary(coverImageLocalPath) : null;
+
+if (!avatar || (coverImageLocalPath && !coverImage)) {
+    throw new ApiError(400, "Failed to upload avatar or cover image");
+}
+
 
     const user = await User.create({
         fullName,
@@ -257,7 +276,7 @@ const changeCurrentPassword = asyncHandler(async( req, res) => {
 
 return res
 .status(200)
-.json(new ApiResponse(200), {},"Password Change Sucessfully")
+.json(new ApiResponse(200, {}, "Password Change Sucessfully"))
 })
 
 const getCurrentUser = asyncHandler(async(req, res ) => {
@@ -348,7 +367,7 @@ const updateUserCoverImage = asyncHandler(async(req,res)=> {
 const getUserChannelProfile = asyncHandler(async(req, res) =>{
     const {username} = req.params
 
-    if(!username?.trim){
+    if(!username?.trim()){
         throw new ApiError(400, "username is missing ")
     }
 

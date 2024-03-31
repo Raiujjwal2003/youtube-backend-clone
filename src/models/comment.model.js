@@ -19,6 +19,8 @@ const commentSchema =new Schema(
     },
     {timestamps:true})
 
+    //  gave me access of that api kaise du btaiyee 
+
     commentSchema.plugin(mongooseAggregatePaginate);
 
     export const Comment = mongoose.model("Comment", commentSchema)
