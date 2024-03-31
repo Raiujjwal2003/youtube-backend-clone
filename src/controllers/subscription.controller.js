@@ -81,7 +81,9 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
         const subscribedChannels =  subscriptions.map(subscription => subscription.channel);
         const totalCountOfSubscribedChannels = subscribedChannels.length
         // Return the response with subscribed channels
-        return res.status(200).json(new ApiResponse(200, {subscribedChannels , totalCountOfSubscribedChannels}, "Subscribed channels fetched successfully"));
+        return res
+        .status(200)
+        .json(new ApiResponse(200, {subscribedChannels , totalCountOfSubscribedChannels}, "Subscribed channels fetched successfully"));
     } catch (error) {
         throw new ApiError(400 , "Data not Fetch")
     }
