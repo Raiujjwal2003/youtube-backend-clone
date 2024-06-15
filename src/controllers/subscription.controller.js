@@ -37,28 +37,52 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 
 
 // controller to return subscriber list of a channel
-const getUserChannelSubscribers = asyncHandler(async (req, res) => {
-    const {channelId} = req.params
+// const getUserChannelSubscribers = asyncHandler(async (req, res) => {
+//     const {channelId} = req.params
 
+//     if (!mongoose.isValidObjectId(channelId)) {
+//         throw new ApiError(400, "Invalid channelId");
+//     }
+
+
+//     try {
+//           const subscribers = await Subscription.find({ channel: channelId });
+
+//           const subscriberCount = subscribers.length;
+  
+//           // Return the response with the subscriber count
+//           return res
+//           .status(200)
+//           .json(new ApiResponse(200, { subscribers, subscriberCount }, "Subscriber count fetched successfully"));
+//     } catch (error) {
+//         console.error("Error:", error);
+//         return res.status(500).json(new ApiResponse(500, null, "Internal Server Error"));
+//     }
+// })
+
+const getUserChannelSubscribers = asyncHandler(async (req, res) => {
+    const { channelId } = req.params;
+
+    // Check if channelId is a valid ObjectId
     if (!mongoose.isValidObjectId(channelId)) {
         throw new ApiError(400, "Invalid channelId");
     }
 
-
     try {
-          const subscribers = await Subscription.find({ channel: channelId });
+        // Find all documents that match the channelId to get the subscriber list
+        const subscribers = await Subscription.find({ channel: channelId });
 
-          const subscriberCount = subscribers.length;
-  
-          // Return the response with the subscriber count
-          return res
-          .status(200)
-          .json(new ApiResponse(200, { subscribers, subscriberCount }, "Subscriber count fetched successfully"));
+        // Count the number of subscribers
+        const subscriberCount = subscribers.length;
+
+        // Return the response with the subscriber list and count
+        return res.status(200).json(new ApiResponse(200, { subscribers, subscriberCount }, "Subscriber list and count fetched successfully"));
     } catch (error) {
         console.error("Error:", error);
         return res.status(500).json(new ApiResponse(500, null, "Internal Server Error"));
     }
-})
+});
+
 
 const getSubscribedChannels = asyncHandler(async (req, res) => {
     const { subscriberId } = req.params;
