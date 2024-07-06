@@ -25,7 +25,7 @@ const generateAccessAndRefereshTokens = async(userId) => {
         }
 
     } catch (error) {
-        throw new ApiError (500, "SOmthing went wrong when generating access and refresh token")
+        throw new ApiError (500, "Somthing went wrong when generating access and refresh token")
 
         
     }
